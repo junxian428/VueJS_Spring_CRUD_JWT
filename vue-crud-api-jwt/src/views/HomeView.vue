@@ -98,6 +98,10 @@
             // Clear any user-related data in your Vue.js application
             // Redirect the user to the login page or any other desired route
             console.log("success");
+            sessionStorage.removeItem('access_Token');
+            document.cookie = "access_Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            localStorage.removeItem('access_Token');
+
             message.value = `You are logout please login again`;
             convertToLogin();
   
