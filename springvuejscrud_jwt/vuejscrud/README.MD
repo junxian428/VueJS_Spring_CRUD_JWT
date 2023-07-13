@@ -1,0 +1,7 @@
+CREATE TABLE items (
+
+  id INT AUTO_INCREMENT PRIMARY KEY,
+
+  text VARCHAR(255) NOT NULL
+  
+);
