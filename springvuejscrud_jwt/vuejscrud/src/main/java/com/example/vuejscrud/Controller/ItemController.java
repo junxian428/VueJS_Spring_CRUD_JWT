@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
 
 import com.example.vuejscrud.Entity.Items;
 import com.example.vuejscrud.Service.ItemService;
@@ -30,22 +37,177 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping
-    public ResponseEntity<List<Items>> getAllItems(@RequestHeader("Authorization") String bearerToken) {
+    public ResponseEntity<List<Items>> getAllItems(@RequestHeader("Authorization") String bearerToken) throws IOException {
         System.out.println(bearerToken);
-        List<Items> items = itemService.getAllItems();
+        //
+        String userId= "";
+        
+        if (bearerToken != null && bearerToken.length() > 7) {
+            bearerToken = bearerToken.substring(7);
+       }
+
+
+        String url = "http://localhost:8087/dashboard/userid";
+        String token = bearerToken;
+
+        // Create the URL object
+        URL apiUrl = new URL(url);
+
+        // Open a connection
+        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+
+        // Set the request method to GET
+        connection.setRequestMethod("GET");
+
+        // Set the Authorization header with the authentication token
+        connection.setRequestProperty("Authorization", "Bearer " + token);
+
+        // Get the response code
+        int responseCode = connection.getResponseCode();
+
+        // If the response code is 200 (OK), read the response body
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuilder responseBody = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                responseBody.append(line);
+            }
+            reader.close();
+
+            // Print the response body
+            System.out.println(responseBody.toString());
+            //List<Items> items = itemService.getItemsByUserId(responseBody.toString());
+            userId = responseBody.toString();
+            
+        } else {
+            System.out.println("Request failed with response code: " + responseCode);
+        }
+
+        // Close the connection
+        connection.disconnect();
+    
+
+
+        List<Items> items = itemService.getItemsByUserId( userId );
+
+        //
+
         return ResponseEntity.ok(items);
     }
 
     @PostMapping
-    public ResponseEntity<Items> createItem(@RequestHeader("Authorization") String bearerToken, @RequestBody Items item) {
+    public ResponseEntity<Items> createItem(@RequestHeader("Authorization") String bearerToken, @RequestBody Items item) throws IOException {
         System.out.println(bearerToken);
+        //
+
+        
+        if (bearerToken != null && bearerToken.length() > 7) {
+            bearerToken = bearerToken.substring(7);
+       }
+
+
+        String url = "http://localhost:8087/dashboard/userid";
+        String token = bearerToken;
+
+        // Create the URL object
+        URL apiUrl = new URL(url);
+
+        // Open a connection
+        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+
+        // Set the request method to GET
+        connection.setRequestMethod("GET");
+
+        // Set the Authorization header with the authentication token
+        connection.setRequestProperty("Authorization", "Bearer " + token);
+
+        // Get the response code
+        int responseCode = connection.getResponseCode();
+
+        // If the response code is 200 (OK), read the response body
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuilder responseBody = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                responseBody.append(line);
+            }
+            reader.close();
+
+            // Print the response body
+            System.out.println(responseBody.toString());
+            item.setUser_id(Integer.parseInt(responseBody.toString()));
+
+        } else {
+            System.out.println("Request failed with response code: " + responseCode);
+        }
+
+        // Close the connection
+        connection.disconnect();
+    
+
+
+
+        //
         Items createdItem = itemService.createItem(item);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Items> updateItem(@RequestHeader("Authorization") String bearerToken, @PathVariable("id") Long id, @RequestBody Items updatedItem) {
+    public ResponseEntity<Items> updateItem(@RequestHeader("Authorization") String bearerToken, @PathVariable("id") int id, @RequestBody Items updatedItem) throws IOException {
         System.out.println(bearerToken);
+        //
+
+        if (bearerToken != null && bearerToken.length() > 7) {
+            bearerToken = bearerToken.substring(7);
+       }
+
+
+        String url = "http://localhost:8087/dashboard/userid";
+        String token = bearerToken;
+
+        // Create the URL object
+        URL apiUrl = new URL(url);
+
+        // Open a connection
+        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+
+        // Set the request method to GET
+        connection.setRequestMethod("GET");
+
+        // Set the Authorization header with the authentication token
+        connection.setRequestProperty("Authorization", "Bearer " + token);
+
+        // Get the response code
+        int responseCode = connection.getResponseCode();
+
+        // If the response code is 200 (OK), read the response body
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuilder responseBody = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                responseBody.append(line);
+            }
+            reader.close();
+
+            // Print the response body
+            System.out.println(responseBody.toString());
+            updatedItem.setUser_id(Integer.parseInt(responseBody.toString()));
+
+            
+        } else {
+            System.out.println("Request failed with response code: " + responseCode);
+        }
+
+        // Close the connection
+        connection.disconnect();
+    
+
+
+
+        //
 
         Items item = itemService.getItemById(id);
         if (item != null) {
@@ -58,8 +220,59 @@ public class ItemController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItem(@RequestHeader("Authorization") String bearerToken, @PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteItem(@RequestHeader("Authorization") String bearerToken, @PathVariable("id") int id) throws IOException{
         System.out.println(bearerToken);
+        //
+
+
+        if (bearerToken != null && bearerToken.length() > 7) {
+            bearerToken = bearerToken.substring(7);
+       }
+
+
+        String url = "http://localhost:8087/dashboard/userid";
+        String token = bearerToken;
+
+        // Create the URL object
+        URL apiUrl = new URL(url);
+
+        // Open a connection
+        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+
+        // Set the request method to GET
+        connection.setRequestMethod("GET");
+
+        // Set the Authorization header with the authentication token
+        connection.setRequestProperty("Authorization", "Bearer " + token);
+
+        // Get the response code
+        int responseCode = connection.getResponseCode();
+
+        // If the response code is 200 (OK), read the response body
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuilder responseBody = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                responseBody.append(line);
+            }
+            reader.close();
+
+            // Print the response body
+            System.out.println(responseBody.toString());
+        } else {
+            System.out.println("Request failed with response code: " + responseCode);
+        }
+
+        // Close the connection
+        connection.disconnect();
+    
+
+
+
+        //
+
+        //
         Items item = itemService.getItemById(id);
         if (item != null) {
             itemService.deleteItem(id);

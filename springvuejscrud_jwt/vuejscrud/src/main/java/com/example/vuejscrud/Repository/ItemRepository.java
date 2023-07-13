@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.example.vuejscrud.Entity.Items;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Items, Long> {
+public interface ItemRepository extends JpaRepository<Items, Integer> {
 }

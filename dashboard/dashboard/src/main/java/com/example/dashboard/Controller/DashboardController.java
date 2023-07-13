@@ -16,7 +16,7 @@ import com.example.dashboard.Mapper.TokenMapper;
 
 @RestController
 @RequestMapping("/dashboard")
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082"})
 public class DashboardController {
 
     @Autowired
@@ -65,5 +65,48 @@ public class DashboardController {
 
        
        return username;
+    }
+
+    //
+
+      @GetMapping("/userid")
+    public String getUser(@RequestHeader("Authorization") String authorizationHeader) {
+        // Logic to retrieve and process dashboard data
+        String useraccount= "";
+
+
+       // Logic to retrieve and process dashboard data
+       System.out.println("Authorization Header: " + authorizationHeader);
+       if (authorizationHeader != null && authorizationHeader.length() > 7) {
+          authorizationHeader = authorizationHeader.substring(7);
+     }
+       // Retrieve the latest token using MyBatis
+        // Retrieve token data from the database
+   // Retrieve the latest token from the database
+        try{
+                 Token latestToken = tokenMapper.getTokenByTokenValue(authorizationHeader);
+
+                 User userid = tokenMapper.getUserByUserID(Integer.toString(latestToken.getUser_Id()));
+
+                if (latestToken != null && userid != null) {
+                    // Process the token data as needed
+                    //System.out.println("Latest Token: " + latestToken.getToken());
+                    System.out.println("User ID: " + latestToken.getUser_Id());
+                    //System.out.println("Username " + userid.getFirstname() + userid.getLastname());
+                    //username = userid.getFirstname() + userid.getLastname();
+                    useraccount = Integer.toString(latestToken.getUser_Id());
+                    // ...
+                } else {
+                    // Token not found, handle the case accordingly
+                    System.out.println("null");
+                }
+        
+        }catch(Exception e){
+            System.out.println(e);
+        }
+                
+
+       
+       return useraccount;
     }
 }
