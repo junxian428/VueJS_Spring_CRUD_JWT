@@ -9,6 +9,9 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+    meta: {
+      requiresAuth: true, // Add the 'requiresAuth' meta field to the route
+    },
   },
   {
     path: '/Items',

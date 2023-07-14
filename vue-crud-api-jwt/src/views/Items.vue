@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1>Items</h1>
+      <h3>Alarm Configuration</h3>
   
       <!-- Form for creating new item -->
       <form @submit.prevent="addItem">
@@ -51,7 +51,10 @@
           /(?:(?:^|.*;\s*)access_Token\s*\=\s*([^;]*).*$)|^.*$/,
           '$1'
         );
-
+        const blobCookie = document.cookie.replace(
+            /(?:(?:^|.*;\s*)blob_data\s*\=\s*([^;]*).*$)|^.*$/,
+            '$1'
+          );
 
         
         axios.get('http://localhost:8082/api/items', {
@@ -73,7 +76,10 @@
           '$1'
         );
 
-
+        const blobCookie = document.cookie.replace(
+            /(?:(?:^|.*;\s*)blob_data\s*\=\s*([^;]*).*$)|^.*$/,
+            '$1'
+          );
 
         const newItem = {
           text: this.newItemText,
@@ -82,6 +88,7 @@
         axios.post('http://localhost:8082/api/items', newItem, {
           headers: {
             Authorization: `Bearer ${sessionCookie}`,
+
           },
         })
           .then(response => {
@@ -103,7 +110,10 @@
           '$1'
         );
 
-        
+        const blobCookie = document.cookie.replace(
+            /(?:(?:^|.*;\s*)blob_data\s*\=\s*([^;]*).*$)|^.*$/,
+            '$1'
+          ); 
         const updatedItem = {
           id: this.items[this.editIndex].id,
           text: this.editedItemText,
@@ -112,6 +122,7 @@
         axios.put(`http://localhost:8082/api/items/${updatedItem.id}`, updatedItem, {
           headers: {
             Authorization: `Bearer ${sessionCookie}`,
+
           },
         })
           .then(() => {
@@ -131,6 +142,12 @@
           /(?:(?:^|.*;\s*)access_Token\s*\=\s*([^;]*).*$)|^.*$/,
           '$1'
         );
+
+        const blobCookie = document.cookie.replace(
+            /(?:(?:^|.*;\s*)blob_data\s*\=\s*([^;]*).*$)|^.*$/,
+            '$1'
+          );
+
         axios.delete(`http://localhost:8082/api/items/${itemId}`, {
           headers: {
             Authorization: `Bearer ${sessionCookie}`,

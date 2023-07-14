@@ -4,18 +4,27 @@
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
   
         <div class="form-floating">
+          <label>Email&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
           <input type="email" class="form-control" name="email" placeholder="name@example.com">
-          <label>Email</label>
         </div>
-  
+        <br>
         <div class="form-floating">
+          <label>Password&nbsp</label>
           <input type="password" class="form-control" name="password" placeholder="Password">
-          <label>Password</label>
         </div>
-  
+        <br>
+        <br>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
       </form>
     </main>
+
+    <!----->
+
+
+
+
+
+  
   </template>
   
   <script>
@@ -33,6 +42,9 @@
       password: ''
     };
     },
+
+
+
     
     setup() {
         const router = useRouter();
@@ -42,6 +54,7 @@
         //
 
         //
+        try{
         const form = new FormData(e.target);
   
         const inputs = Object.fromEntries(form.entries());
@@ -62,6 +75,16 @@
        // axios.defaults.headers.common['Authorization'] = `Bearer ${data.access_token}`;
         //console.log(data.token);
         await router.push('/');
+      }catch(error){
+
+        // Clear email input
+document.querySelector('input[name="email"]').value = '';
+
+// Clear password input
+document.querySelector('input[name="password"]').value = '';
+        await router.push('/login');
+
+        }
       }
   
 
@@ -72,3 +95,13 @@
     }
   }
   </script>
+
+
+<style>
+.form-signin {
+  border: 1px solid #ccc;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+</style>

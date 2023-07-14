@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,8 @@ import java.net.URL;
 import com.example.vuejscrud.Entity.Items;
 import com.example.vuejscrud.Service.ItemService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/items")
 @CrossOrigin(origins = "http://localhost:8081") // Adjust the allowed origins as per your Vue.js app's URL
@@ -39,6 +42,7 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<List<Items>> getAllItems(@RequestHeader("Authorization") String bearerToken) throws IOException {
         System.out.println(bearerToken);
+        //System.out.println(blobData);
         //
         String userId= "";
         
