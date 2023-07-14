@@ -182,6 +182,7 @@ methods: {
 
           //
           convertToLogin();
+          router.push('/login');
 
         })
         .catch(error => {
