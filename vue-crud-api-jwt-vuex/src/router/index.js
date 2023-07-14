@@ -1,15 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import Items from '../views/Items.vue';
 import Login from '../views/Login.vue';
-import Register from '../views/Register.vue';
-import Monitor from '../views/Monitor.vue';
+
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue'),
     meta: {
       requiresAuth: true, // Add the 'requiresAuth' meta field to the route
     },
@@ -17,7 +14,7 @@ const routes = [
   {
     path: '/Items',
     name: 'Items',
-    component: Items,
+    component: () => import(/* webpackChunkName: "about" */ '../views/Items.vue'),
     meta: {
       requiresAuth: true, // Add the 'requiresAuth' meta field to the route
     },
@@ -26,7 +23,7 @@ const routes = [
   {
     path: '/Monitor',
     name: 'Monitor',
-    component: Monitor,
+    component: () => import(/* webpackChunkName: "about" */ '../views/Monitor.vue'),
     meta: {
       requiresAuth: true, // Add the 'requiresAuth' meta field to the route
     },
@@ -42,12 +39,7 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: Register,
-  },
+  }
 ];
 
 const router = createRouter({

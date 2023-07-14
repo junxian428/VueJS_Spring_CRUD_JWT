@@ -63,7 +63,7 @@
             email: inputs.email,
             password: inputs.password
         };
-        const {data} = await axios.post('http://localhost:8086/api/v1/auth/authenticate', loginData);
+        const {data} = await axios.post(process.env.VUE_APP_API_URI, loginData);
         console.log(data);
         console.log(data['access_token']);
 
@@ -76,7 +76,7 @@
         //console.log(data.token);
         await router.push('/');
       }catch(error){
-
+        console.log(error);
         // Clear email input
 document.querySelector('input[name="email"]').value = '';
 
