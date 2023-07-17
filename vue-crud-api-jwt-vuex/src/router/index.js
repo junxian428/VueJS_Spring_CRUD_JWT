@@ -52,6 +52,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // Check if the bearer token is present
     //
+    document.title = to.meta.title || 'Manufacturing SCADA';
 
     const sessionCookie = document.cookie.replace(
       /(?:(?:^|.*;\s*)access_Token\s*\=\s*([^;]*).*$)|^.*$/,

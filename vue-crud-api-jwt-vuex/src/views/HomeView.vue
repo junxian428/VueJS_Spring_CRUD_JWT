@@ -164,7 +164,11 @@ methods: {
         '$1'
       );
       console.log(sessionCookie);
+      sessionStorage.removeItem('access_Token');
+          document.cookie = "access_Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          localStorage.removeItem('access_Token');
 
+          message.value = `You are logout please login again`;
       //
 
       axios.post('http://localhost:8086/api/v1/auth/quit')
@@ -173,15 +177,15 @@ methods: {
           // Clear any user-related data in your Vue.js application
           // Redirect the user to the login page or any other desired route
           console.log("success");
-          sessionStorage.removeItem('access_Token');
-          document.cookie = "access_Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          localStorage.removeItem('access_Token');
+        //  sessionStorage.removeItem('access_Token');
+        //  document.cookie = "access_Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        //  localStorage.removeItem('access_Token');
 
-          message.value = `You are logout please login again`;
+          //message.value = `You are logout please login again`;
           //
 
           //
-          convertToLogin();
+          //convertToLogin();
           router.push('/login');
 
         })
